@@ -45,8 +45,15 @@ public class SecurityConfig {
         //jwt 방식 또는 무상태(Stateless) 인증이기 때문에
         //세션이 없고, 쿠키도 안 쓰고, 토큰 기반이기 때문에 CSRF 공격 자체가 성립되지 않는다.
         return http.csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .build();
+                .formLogin(form -> form.disable()) //서버 사이드 렌더링 로그인 방식 비활성화
+                .httpBasic(httpBasic -> httpBasic.disable()) //http 프로토콜 기본 로그인 방식 비활성화
+                .logout(logout -> logout.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/post").permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .build();
 
     }
 }
