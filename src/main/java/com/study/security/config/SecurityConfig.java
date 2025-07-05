@@ -1,17 +1,30 @@
 package com.study.security.config;
 
+import com.study.security.security.filter.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     /**
      * corsConfigurationSource() 설정은 spring security 에서
@@ -24,8 +37,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
         //요청을 보내는 쪽의 도메인(사이트 주소)을 허용
-        corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
+        corsConfiguration.addAllowedOriginPattern(CorsConfiguration.ALL);
         //요청을 보내는 쪽에서 Request, Response Header 정보에 대한 제약을 허용
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         //요청을 보내는 쪽의 메소드 (GET, POST, PUT, DELETE, OPTION 등)
@@ -49,8 +63,9 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable()) //http 프로토콜 기본 로그인 방식 비활성화
                 .logout(logout -> logout.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/post").permitAll();
+                    auth.requestMatchers("/auth/test", "/auth/signup").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .build();

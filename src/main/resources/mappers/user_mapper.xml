@@ -1,0 +1,9 @@
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.security.mapper.UserMapper">
+    <insert id="addUser">
+        insert into user_tb values (0, #{username}, #{password}, #{email});
+    </insert>
+</mapper>
