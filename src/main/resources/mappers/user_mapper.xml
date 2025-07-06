@@ -6,4 +6,7 @@
     <insert id="addUser">
         insert into user_tb values (0, #{username}, #{password}, #{email});
     </insert>
+    <select id="getUserByUserId">
+        select * from user_tb where user_id = #{userId}
+    </select>
 </mapper>

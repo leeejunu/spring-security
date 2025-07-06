@@ -5,6 +5,8 @@ import com.study.security.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
@@ -13,5 +15,9 @@ public class UserRepository {
 
     public int addUser(User user) {
         return userMapper.addUser(user);
+    }
+
+    public Optional<User> getUserById(Long userId) {
+        return userMapper.getUserByUserId(userId);
     }
 }
