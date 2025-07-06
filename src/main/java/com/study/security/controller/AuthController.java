@@ -1,5 +1,6 @@
 package com.study.security.controller;
 
+import com.study.security.dto.SigninRequestDto;
 import com.study.security.dto.SignupReqDto;
 import com.study.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupReqDto signupReqDto) {
         return ResponseEntity.ok().body(authService.addUser(signupReqDto));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> signin(@RequestBody SigninRequestDto signinRequestDto) {
+        return ResponseEntity.ok().body(authService.signin(signinRequestDto));
     }
 }
