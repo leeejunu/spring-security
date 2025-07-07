@@ -1,5 +1,6 @@
 package com.study.security.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +18,7 @@ public class PrincipalUser implements UserDetails {
 
     private Long userId;
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
 

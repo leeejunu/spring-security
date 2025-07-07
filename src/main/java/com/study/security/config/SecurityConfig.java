@@ -32,7 +32,6 @@ public class SecurityConfig {
      * CORS
      * 브라우저가 보안상 다른 도메인의 리소스 요청을 제한하는 정책
      * 기본적으로 브라우저는 같은 출처(Same-Origin)만 허용한다.
-     *
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

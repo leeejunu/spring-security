@@ -4,19 +4,19 @@ import com.study.security.entity.User;
 import com.study.security.repository.UserRepository;
 import com.study.security.security.jwt.JwtUtil;
 import com.study.security.security.model.PrincipalUser;
+
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParserBuilder;
-import io.jsonwebtoken.Jwts;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
 import java.util.List;
