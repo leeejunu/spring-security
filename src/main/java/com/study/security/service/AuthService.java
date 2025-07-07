@@ -4,7 +4,9 @@ import com.study.security.dto.ApiRespDto;
 import com.study.security.dto.SigninRequestDto;
 import com.study.security.dto.SignupReqDto;
 import com.study.security.entity.User;
+import com.study.security.entity.UserRole;
 import com.study.security.repository.UserRepository;
+import com.study.security.repository.UserRoleRepository;
 import com.study.security.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,10 +21,18 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
+    private final UserRoleRepository userRoleRepository;
 
     public ApiRespDto<?> addUser(SignupReqDto signupReqDto) {
-        int result = userRepository.addUser(signupReqDto.toEntity(bCryptPasswordEncoder));
-        return new ApiRespDto<>("success", "회원가입 성공", result);
+        Optional<User> user = userRepository.addUser(signupReqDto.toEntity(bCryptPasswordEncoder));
+        UserRole userRole = UserRole.builder()
+                .userId(user.get().getUserId())
+                .roleId(3L)
+                .build();
+
+        userRoleRepository.addUserRole(userRole);
+
+        return new ApiRespDto<>("success", "회원가입 성공", user);
     }
 
     public ApiRespDto<?> signin(SigninRequestDto signinRequestDto) {

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-    int addUser(User user);
+    Optional<User> addUser(User user);
 
     Optional<User> getUserByUserId(Long userId);
 
